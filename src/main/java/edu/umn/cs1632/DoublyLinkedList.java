@@ -2,6 +2,8 @@ package edu.umn.cs1632;
 
 import java.util.Objects;
 
+// Simple doubly linked list (no sentinels).
+// add front/end, find, remove(first), print forward/reverse.
 public class DoublyLinkedList<T> {
 
     private static final class Node<T> {
@@ -16,31 +18,38 @@ public class DoublyLinkedList<T> {
     public void addItem(T value) {
         Node<T> n = new Node<>(value);
         n.next = head;
-        if (head != null) head.prev = n; else tail = n;
-        head = n; size++;
+        if (head != null) head.prev = n; else tail = n; // was empty
+        head = n;
+        size++;
     }
 
-    // append to end
+    // add to end
     public void addItemAtEnd(T value) {
         Node<T> n = new Node<>(value);
         n.prev = tail;
-        if (tail != null) tail.next = n; else head = n;
-        tail = n; size++;
+        if (tail != null) tail.next = n; else head = n; // was empty
+        tail = n;
+        size++;
     }
 
     public boolean find(T value) { return findNode(value) != null; }
 
-    // remove first occurrence
+    // remove first match
     public boolean remove(T value) {
         Node<T> t = findNode(value);
         if (t == null) return false;
+
         Node<T> p = t.prev, q = t.next;
-        if (p != null) p.next = q; else head = q;
-        if (q != null) q.prev = p; else tail = p;
-        size--; return true;
+        if (p != null) p.next = q; else head = q; // removed head
+        if (q != null) q.prev = p; else tail = p; // removed tail
+        size--;
+        return true;
     }
 
+    // print forward
     public void showList() { System.out.println(toForwardString()); }
+
+    // print reverse
     public void showReverseList() { System.out.println(toReverseString()); }
 
     public String toForwardString() {
